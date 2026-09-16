@@ -1,0 +1,112 @@
+.game-grid {
+  --cell-size: min(2.0833vw, 3.3333svh);
+  --board-width: calc(48 * var(--cell-size));
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  bottom: 0;
+  height: auto;
+  overflow: hidden;
+  opacity: 0.27;
+}
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--board-width);
+  height: 100%;
+  transform: translateX(-50%);
+  opacity: 0.12;
+  background-image: linear-gradient(rgba(211, 235, 189, 0.13) 1px, transparent 1px), linear-gradient(90deg, rgba(211, 235, 189, 0.13) 1px, transparent 1px);
+  background-size: var(--cell-size) var(--cell-size);
+}
+
+.segment,
+.apple {
+  position: absolute;
+  display: block;
+  top: calc(var(--y) * var(--cell-size));
+  left: calc((50% - (24 * var(--cell-size))) + (var(--x) * var(--cell-size)));
+  width: var(--cell-size);
+  height: var(--cell-size);
+  transition: top 145ms linear, left 145ms linear;
+}
+
+.segment::after {
+  content: '';
+  position: absolute;
+  inset: 18%;
+  background: #c5f36c;
+  box-shadow: 0 0 10px rgba(197, 243, 108, 0.12);
+}
+
+.segment.head::after { background: #efffc7; }
+
+.ambient-snake { opacity: 0.3; }
+.ambient-snake .segment::after { background: var(--snake-color); }
+.ambient-snake .segment.head::after { background: var(--snake-head); }
+.ambient-snake-0 { --snake-color: #a96858; --snake-head: #c28c7e; }
+.ambient-snake-1 { --snake-color: #668d94; --snake-head: #82a9ad; }
+.ambient-snake-2 { --snake-color: #81709f; --snake-head: #9a89b8; }
+
+.apple {
+  z-index: 2;
+  transition: transform 145ms linear, opacity 450ms ease, filter 450ms ease;
+}
+
+.apple span {
+  display: block;
+  width: 44%;
+  height: 44%;
+  margin: 28%;
+  background: #ef724e;
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(239, 114, 78, 0.3);
+}
+
+.snake { position: absolute; inset: 0; z-index: 1; }
+.snake.is-teleporting .segment { transition: none; }
+.snake.is-dying { animation: death 560ms ease-in forwards; }
+.snake:not(.is-dying) { animation: arrival 420ms ease-out; }
+.apple.is-dying { opacity: 0; filter: blur(3px); transform: scale(1.5); }
+
+.apple-edge-indicator {
+  --cell-size: min(2.0833vw, 3.3333svh);
+  position: fixed;
+  left: calc((50% - (24 * var(--cell-size))) + (var(--x) * var(--cell-size)));
+  z-index: 4;
+  width: 22px;
+  height: 22px;
+  margin-left: -6px;
+  border: 1px solid #ef724e;
+  border-radius: 50%;
+  color: #ef724e;
+  font: 700 14px/20px var(--mono);
+  text-align: center;
+  background: rgba(16, 20, 18, 0.88);
+  box-shadow: 0 0 14px rgba(239, 114, 78, 0.28);
+  animation: indicator-pulse 1.2s ease-in-out infinite;
+}
+
+.apple-edge-indicator-top { top: 14px; }
+.apple-edge-indicator-bottom { bottom: 14px; }
+
+@keyframes death {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+@keyframes arrival {
+  0% { opacity: 0; transform: translateX(-7px) rotate(-1deg); }
+  35% { opacity: 1; transform: translateX(5px) rotate(0.8deg); }
+  65% { transform: translateX(-2px) rotate(-0.3deg); }
+  100% { transform: translateX(0) rotate(0); }
+}
+
+@keyframes indicator-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}

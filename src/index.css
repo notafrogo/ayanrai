@@ -1,0 +1,14 @@
+:root {
+  --mono: 'SFMono-Regular', 'Cascadia Code', 'Roboto Mono', monospace;
+  --display: Georgia, 'Times New Roman', serif;
+  font-family: var(--mono);
+  color: #ddebce;
+  background: #101412;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+#root { width: 100%; min-height: 100svh; }
